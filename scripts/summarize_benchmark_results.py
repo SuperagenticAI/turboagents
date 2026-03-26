@@ -117,6 +117,40 @@ def _render_mlx_results(payload: dict[str, Any] | None) -> list[str]:
     return lines
 
 
+def _render_needle_results(payload: dict[str, Any] | None) -> list[str]:
+    lines = ["## Needle Sweep", ""]
+    if not payload:
+        lines.append("_No `needle-benchmark.json` found._")
+        lines.append("")
+        return lines
+
+    lines.append(f"- Model: `{payload.get('model', '-')}`")
+    lines.append(f"- Needle: `{payload.get('needle', '-')}`")
+    lines.append(f"- Max tokens: `{_fmt(payload.get('max_tokens'))}`")
+    lines.append("")
+    lines.extend(
+        [
+            "| Bits | Context Tokens | Insertion Fraction | Prompt Tokens | Elapsed Seconds | Exact Match | Contains Needle | Response Preview |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for run in payload.get("runs", []):
+        lines.append(
+            "| {bits} | {context} | {fraction} | {prompt} | {elapsed} | {exact} | {contains} | {preview} |".format(
+                bits=_fmt(run.get("bits")),
+                context=_fmt(run.get("context_tokens")),
+                fraction=_fmt(run.get("insertion_fraction")),
+                prompt=_fmt(run.get("actual_prompt_tokens")),
+                elapsed=_fmt(run.get("elapsed_seconds")),
+                exact=_fmt(run.get("exact_match")),
+                contains=_fmt(run.get("contains_needle")),
+                preview=str(run.get("response_preview", "")).replace("|", "\\|"),
+            )
+        )
+    lines.append("")
+    return lines
+
+
 def build_markdown(result_dir: Path) -> str:
     manifest = _load_json(result_dir / "manifest.json")
     summary = _load_json(result_dir / "summary.json")
@@ -125,6 +159,7 @@ def build_markdown(result_dir: Path) -> str:
     paper = _load_json(result_dir / "bench-paper.json")
     rag_adapters = _load_json(result_dir / "rag-adapters.json")
     mlx = _load_json(result_dir / "mlx-benchmark.json")
+    needle = _load_json(result_dir / "needle-benchmark.json")
 
     lines = ["# Benchmark Summary", ""]
     if manifest:
@@ -139,6 +174,7 @@ def build_markdown(result_dir: Path) -> str:
     lines.extend(_render_metric_table("Synthetic Paper Report", paper))
     lines.extend(_render_rag_adapter_results(rag_adapters))
     lines.extend(_render_mlx_results(mlx))
+    lines.extend(_render_needle_results(needle))
     return "\n".join(lines).rstrip() + "\n"
 
 

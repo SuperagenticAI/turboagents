@@ -43,13 +43,15 @@ what is still incomplete.
   - LanceDB adapter reached `recall@10` in the `0.70` to `0.75` range on `medium-rag`
   - live PostgreSQL `17` + `pgvector` validation completed locally
   - pgvector reached `recall@10 = 0.896875` at `4.0` bits on `medium-rag`
+  - minimal Needle-style long-context sweep completed on the 128 GB Mac
+  - exact-match retrieval held only for the easy `0.1` insertion position and did not hold at `0.5` or `0.9`
 
 ## Not Finished Yet
 
 - final paper-faithful production math
 - true native engine kernels
 - true upstream engine patches
-- LongBench / Needle / larger benchmark datasets and full long-context benchmark matrix
+- LongBench / larger benchmark datasets and a stronger long-context benchmark matrix
 - native compressed index implementations for databases
 
 ## Recommended Machine Split

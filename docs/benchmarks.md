@@ -205,3 +205,54 @@ Still out of scope:
 - full Needle-in-a-Haystack reproductions
 - multi-document or multi-hop tasks
 - serving latency matrix integration
+
+Latest artifact:
+
+- `benchmark-results/needle-20260326-20260326-234159.json`
+
+Observed behavior on `mlx-community/Llama-3.2-3B-Instruct-4bit`:
+
+- exact-match retrieval succeeded at insertion fraction `0.1` across `2048`, `8192`, and `16384` token prompts for all tested bit-widths
+- exact-match retrieval failed consistently at insertion fractions `0.5` and `0.9`
+- `contains_needle` stayed positive for some `2048` and `4096` cases at insertion fraction `0.5`, but this is weaker than the exact-match criterion
+- the current minimal harness therefore shows early-position recall, not robust long-context retrieval
+- elapsed time scaled materially with context length, reaching about `15.6s` to `21.5s` per case at `16384` tokens
+
+| Bits | Context Tokens | Insertion Fraction | Elapsed Seconds | Exact Match | Contains Needle |
+| --- | --- | --- | --- | --- | --- |
+| 3.0 | 2048 | 0.1 | 1.1014 | true | true |
+| 3.0 | 2048 | 0.5 | 1.1488 | false | true |
+| 3.0 | 2048 | 0.9 | 1.1465 | false | false |
+| 3.0 | 4096 | 0.1 | 2.5599 | false | true |
+| 3.0 | 4096 | 0.5 | 2.6351 | false | true |
+| 3.0 | 4096 | 0.9 | 2.7681 | false | false |
+| 3.0 | 8192 | 0.1 | 6.1731 | true | true |
+| 3.0 | 8192 | 0.5 | 6.7962 | false | false |
+| 3.0 | 8192 | 0.9 | 6.3600 | false | false |
+| 3.0 | 16384 | 0.1 | 15.6448 | true | true |
+| 3.0 | 16384 | 0.5 | 16.1179 | false | false |
+| 3.0 | 16384 | 0.9 | 15.6592 | false | false |
+| 3.5 | 2048 | 0.1 | 1.2985 | true | true |
+| 3.5 | 2048 | 0.5 | 1.4403 | false | true |
+| 3.5 | 2048 | 0.9 | 1.4370 | false | false |
+| 3.5 | 4096 | 0.1 | 2.9586 | false | true |
+| 3.5 | 4096 | 0.5 | 2.9688 | false | true |
+| 3.5 | 4096 | 0.9 | 2.9501 | false | false |
+| 3.5 | 8192 | 0.1 | 6.3312 | true | true |
+| 3.5 | 8192 | 0.5 | 6.5699 | false | false |
+| 3.5 | 8192 | 0.9 | 6.5293 | false | false |
+| 3.5 | 16384 | 0.1 | 18.4821 | true | true |
+| 3.5 | 16384 | 0.5 | 18.9856 | false | false |
+| 3.5 | 16384 | 0.9 | 19.2857 | false | false |
+| 4.0 | 2048 | 0.1 | 1.5542 | true | true |
+| 4.0 | 2048 | 0.5 | 1.6880 | false | true |
+| 4.0 | 2048 | 0.9 | 1.6921 | false | false |
+| 4.0 | 4096 | 0.1 | 3.5982 | false | true |
+| 4.0 | 4096 | 0.5 | 3.6594 | false | true |
+| 4.0 | 4096 | 0.9 | 3.8123 | false | false |
+| 4.0 | 8192 | 0.1 | 7.8715 | true | true |
+| 4.0 | 8192 | 0.5 | 8.3909 | false | false |
+| 4.0 | 8192 | 0.9 | 8.4198 | false | false |
+| 4.0 | 16384 | 0.1 | 20.2147 | true | true |
+| 4.0 | 16384 | 0.5 | 21.5121 | false | false |
+| 4.0 | 16384 | 0.9 | 20.6090 | false | false |
