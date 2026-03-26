@@ -49,7 +49,7 @@ class TurboFAISS(InMemoryTurboIndex):
         if self._index is not None:
             return
         if not _faiss_available():
-            raise RuntimeError("faiss is not installed. Install turboagents[rag].")
+            raise RuntimeError('faiss is not installed. Install with `uv sync --extra rag`.')
         import faiss
 
         if self.metric != "ip":

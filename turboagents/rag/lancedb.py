@@ -59,7 +59,7 @@ class TurboLanceDB(InMemoryTurboIndex):
         if self._db is None:
             if not _lancedb_available():
                 raise RuntimeError(
-                    "lancedb is not installed. Install with `pip install turboagents[rag]`."
+                    "lancedb is not installed. Install with `uv sync --extra rag`."
                 )
             lancedb = importlib.import_module("lancedb")
             self._db = lancedb.connect(self.uri)

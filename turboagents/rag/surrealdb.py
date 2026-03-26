@@ -63,7 +63,7 @@ class TurboSurrealDB(InMemoryTurboIndex):
         if self._client is None:
             if not _surrealdb_available():
                 raise RuntimeError(
-                    "surrealdb is not installed. Install with `pip install turboagents[rag]`."
+                    "surrealdb is not installed. Install with `uv sync --extra rag`."
                 )
             surrealdb = importlib.import_module("surrealdb")
             client = surrealdb.AsyncSurreal(self.url)

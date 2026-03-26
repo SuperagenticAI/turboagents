@@ -80,10 +80,11 @@ Already implemented:
 - MLX runtime/server wrapper
 - llama.cpp runtime wrapper
 - experimental vLLM runtime wrapper
+- reproducible 128 GB Mac benchmark harness with checked-in result artifacts
 
 Not finished yet:
 
 - native production kernels
-- large benchmark reproduction
-- full long-context benchmark matrix
+- LongBench / Needle / larger benchmark reproduction
+- full long-context benchmark matrix beyond the current 3B MLX and adapter runs
 - live pgvector/Postgres validation on this machine

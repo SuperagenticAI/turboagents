@@ -60,7 +60,7 @@ class TurboPgvector(InMemoryTurboIndex):
         if self._conn is not None:
             return self._conn
         if not (_pgvector_available() and _psycopg2_available()):
-            raise RuntimeError("psycopg2 and pgvector are required. Install turboagents[rag].")
+            raise RuntimeError("psycopg2 and pgvector are required. Install with `uv sync --extra rag`.")
         import psycopg2
         from pgvector.psycopg2 import register_vector
 
