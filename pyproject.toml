@@ -1,0 +1,86 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "turboagents"
+version = "0.1.0a0"
+description = "Independent TurboQuant-style compression infrastructure for KV cache and RAG."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Superagentic AI", email = "hello@super-agentic.ai" },
+  { name = "Shashi Jagtap", email = "shashikant.jagtap@icloud.com" },
+  { name = "Shashi Jagtap", email = "shashi@super-agentic.ai" },
+]
+maintainers = [
+  { name = "Superagentic AI", email = "hello@super-agentic.ai" },
+]
+dependencies = [
+  "numpy>=1.26",
+]
+
+[project.urls]
+Homepage = "https://superoptix.ai"
+Documentation = "https://superagenticai.github.io/turboagents"
+Repository = "https://github.com/SuperagenticAI/turboagents"
+"Bug Tracker" = "https://github.com/SuperagenticAI/turboagents/issues"
+Support = "https://superoptix.ai"
+Download = "https://pypi.org/project/turboagents/#files"
+
+[project.optional-dependencies]
+bench = [
+  "pytest>=8.0",
+]
+docs = [
+  "mkdocs>=1.6.0",
+  "mkdocs-material>=9.5.0",
+]
+mlx = [
+  "mlx>=0.24.0",
+  "mlx-lm>=0.20.0",
+]
+llamacpp = [
+  "llama-cpp-python>=0.3.0",
+]
+vllm = [
+  "vllm>=0.8.0",
+]
+rag = [
+  "faiss-cpu>=1.8.0",
+  "lancedb>=0.15.0",
+  "psycopg2-binary>=2.9.0",
+  "surrealdb>=1.0.0",
+]
+proxy = [
+  "fastapi>=0.110.0",
+  "uvicorn>=0.30.0",
+]
+all = [
+  "pytest>=8.0",
+  "mkdocs>=1.6.0",
+  "mkdocs-material>=9.5.0",
+  "llama-cpp-python>=0.3.0",
+  "mlx>=0.24.0",
+  "mlx-lm>=0.20.0",
+  "vllm>=0.8.0",
+  "faiss-cpu>=1.8.0",
+  "lancedb>=0.15.0",
+  "psycopg2-binary>=2.9.0",
+  "surrealdb>=1.0.0",
+  "fastapi>=0.110.0",
+  "uvicorn>=0.30.0",
+]
+
+[project.scripts]
+turboagents = "turboagents.cli.main:main"
+
+[project.entry-points."vllm.general_plugins"]
+turboagents = "turboagents.engines.vllm_plugin:register"
+
+[tool.hatch.build.targets.wheel]
+packages = ["turboagents"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
