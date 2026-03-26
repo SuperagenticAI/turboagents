@@ -1,6 +1,5 @@
 # Implementation Notes
 
-- `reference/` is analysis-only.
 - The initial implementation prioritizes a correct, inspectable scaffold over premature optimization.
 - The current `quant.pipeline` now includes:
   - Fast Walsh-Hadamard rotation with cached sign patterns

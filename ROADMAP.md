@@ -1,4 +1,7 @@
-# turboagents -- Implementation Plan
+# turboagents -- Roadmap
+
+This document is a public roadmap, not a statement that every item below is
+already implemented. For the current implementation state, see `docs/status.md`.
 
 **By Superagentic AI**  
 **Date:** March 25, 2026  

@@ -12,7 +12,105 @@ can be used standalone and integrated into SuperOptix.
 
 Repository: `https://github.com/SuperagenticAI/turboagents`
 
-## Status
+## What It Is
+
+`turboagents` is not an agent framework. It is the compression layer you put
+under existing AI agents, inference engines, and RAG stacks so they can:
+
+- hold longer contexts
+- use less KV-cache memory
+- store more embeddings at lower cost
+- benchmark quality and memory tradeoffs explicitly
+
+Think of it as:
+
+- `TurboQuant` for real systems
+- `TurboRAG` for vector retrieval stacks
+- adapters and tooling around existing engines instead of a replacement for them
+
+## Who It Is For
+
+`turboagents` is for teams and developers who already have:
+
+- AI agents that hit memory limits on long prompts
+- RAG systems with large embedding stores
+- inference stacks built on MLX, llama.cpp, vLLM, FAISS, LanceDB, SurrealDB, or pgvector
+- agent frameworks that need compression infrastructure, not another framework
+
+## How To Use It
+
+Most users should think about `turboagents` in three ways.
+
+### 1. Add It Under An Existing Agent Runtime
+
+If you already have an agent system, keep the agent layer and use `turboagents`
+to improve the inference or memory layer under it.
+
+Examples:
+
+- use `turboagents.engines.mlx` for MLX-based local agents
+- use `turboagents.engines.llamacpp` to build llama.cpp runtime commands
+- use `turboagents.engines.vllm` as an experimental runtime wrapper
+
+### 2. Add It Under An Existing RAG Stack
+
+If you already have retrieval, keep your current application logic and add
+TurboRAG where vectors are stored or searched.
+
+Examples:
+
+- use `TurboFAISS` when you want a local FAISS-backed retrieval path
+- use `TurboLanceDB` or `TurboSurrealDB` when you want a sidecar/rerank integration
+- use `TurboPgvector` when your application already depends on PostgreSQL
+
+### 3. Use It As A Benchmark And Compression Tool
+
+If you are still evaluating whether TurboQuant-style compression makes sense for
+your stack, use the CLI first:
+
+- `turboagents doctor`
+- `turboagents bench kv`
+- `turboagents bench rag`
+- `turboagents compress`
+
+That gives you a way to validate fit before deeper integration work.
+
+## Usage Patterns
+
+### Existing Agent + MLX
+
+Use TurboAgents to build or validate the MLX runtime path, then keep your
+existing agent code on top.
+
+```bash
+turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
+```
+
+### Existing RAG + FAISS
+
+Use TurboRAG as the retrieval layer while keeping your current ingestion and
+agent orchestration logic.
+
+```python
+from turboagents.rag import TurboFAISS
+
+index = TurboFAISS(dim=128, bits=3.5, seed=0)
+index.add(vectors)
+results = index.search(query, k=5, rerank_top=16)
+```
+
+### Existing Vector Database
+
+If you already use a database-backed vector layer, TurboAgents should sit beside
+that store first, then move deeper only if it proves useful.
+
+Examples:
+
+- `TurboLanceDB` for LanceDB candidate search + TurboAgents rerank
+- `TurboSurrealDB` for SurrealDB candidate search + TurboAgents rerank
+- `TurboPgvector` for PostgreSQL-backed storage and retrieval
+
+## Current Status
 
 
 - structured quantization payloads with binary serialization
@@ -37,8 +135,6 @@ Still not finished:
 - native engine kernels for llama.cpp / MLX / vLLM
 - live Postgres validation for pgvector on this machine
 - large benchmark datasets and long-context benchmark matrix
-
-
 
 ## Install
 
