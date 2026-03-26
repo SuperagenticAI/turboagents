@@ -1,0 +1,11 @@
+.hero-mark {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.hero-mark img {
+  width: min(460px, 88vw);
+  height: auto;
+  display: block;
+}

@@ -1,6 +1,8 @@
 # turboagents
 
-![turboagents logo](assets/logo.png)
+<div class="hero-mark">
+  <img src="assets/logo.png" alt="turboagents logo">
+</div>
 
 **Turbocharge AI Agents with TurboQuant**
 
