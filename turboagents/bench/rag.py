@@ -38,7 +38,7 @@ def build_rag_report() -> Report:
         recalls_10: list[float] = []
         for query in queries:
             pred = index.search(query, k=10, rerank_top=50)
-            exact_scores = base @ query
+            exact_scores = np.dot(base, query)
             truth1 = list(np.argsort(exact_scores)[::-1][:1])
             truth10 = list(np.argsort(exact_scores)[::-1][:10])
             recalls_1.append(_recall_at_k([item["index"] for item in pred[:1]], truth1))

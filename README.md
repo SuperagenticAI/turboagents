@@ -4,6 +4,13 @@
   <img src="assets/logo.png" alt="turboagents logo" width="220">
 </p>
 
+<p align="center">
+  <a href="https://pypi.org/project/turboagents/"><img src="https://img.shields.io/pypi/v/turboagents.svg" alt="PyPI"></a>
+  <a href="https://pypi.org/project/turboagents/"><img src="https://img.shields.io/pypi/pyversions/turboagents.svg" alt="Python versions"></a>
+  <a href="https://github.com/SuperagenticAI/turboagents/actions/workflows/ci.yml"><img src="https://github.com/SuperagenticAI/turboagents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-black.svg" alt="License"></a>
+</p>
+
 **Turbocharge AI Agents with TurboQuant**
 
 `turboagents` is a single Python package for TurboQuant-style KV-cache and vector
@@ -139,18 +146,23 @@ Still not finished:
 ## Install
 
 ```bash
-pip install -e .
+uv add turboagents
 ```
 
 Optional extras:
 
 ```bash
-pip install -e ".[bench]"
-pip install -e ".[docs]"
-pip install -e ".[mlx]"
-pip install -e ".[vllm]"
-pip install -e ".[rag]"
-pip install -e ".[all]"
+uv add "turboagents[mlx]"
+uv add "turboagents[vllm]"
+uv add "turboagents[rag]"
+uv add "turboagents[all]"
+```
+
+For local development in this repository:
+
+```bash
+uv sync
+uv sync --extra rag
 ```
 
 ## CLI
@@ -177,7 +189,25 @@ python3 examples/mlx_server_dry_run.py
 ## Current Local Validation
 
 - cached MLX 3B smoke test succeeded on `mlx-community/Llama-3.2-3B-Instruct-4bit`
-- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q` passes
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m pytest -q` passes
+
+## Development
+
+Common local commands:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m pytest -q
+uv run mkdocs serve
+uv build
+```
+
+Community and project health files:
+
+- [CHANGELOG.md](CHANGELOG.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [SECURITY.md](SECURITY.md)
+- [SUPPORT.md](SUPPORT.md)
 
 ## Attribution
 

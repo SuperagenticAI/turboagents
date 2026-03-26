@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support
+    url: https://github.com/SuperagenticAI/turboagents/blob/main/SUPPORT.md
+    about: Ask usage and integration questions with the support guidelines.
+  - name: Security policy
+    url: https://github.com/SuperagenticAI/turboagents/blob/main/SECURITY.md
+    about: Report vulnerabilities privately using the security policy.

@@ -31,7 +31,7 @@ what is still incomplete.
 ## Validated Locally
 
 - full test suite passes
-- `mkdocs build` succeeds
+- `uv run mkdocs build` succeeds
 - cached MLX `3B` smoke test works on:
   - `mlx-community/Llama-3.2-3B-Instruct-4bit`
 - FAISS-backed TurboRAG example runs locally

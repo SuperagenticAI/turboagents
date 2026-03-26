@@ -39,8 +39,8 @@ def build_kv_report() -> Report:
                 / (np.linalg.norm(vectors, axis=1) * np.linalg.norm(restored, axis=1) + 1e-8)
             )
         )
-        exact_ips = vectors @ query
-        approx_ips = restored @ query
+        exact_ips = np.dot(vectors, query)
+        approx_ips = np.dot(restored, query)
         ip_mae = float(np.mean(np.abs(exact_ips - approx_ips)))
         payload[f"b{bits}_compression_ratio_vs_fp16"] = round(cfg.compression_ratio_vs_fp16, 4)
         payload[f"b{bits}_max_context_24gb"] = calc.max_context(cfg.bits)

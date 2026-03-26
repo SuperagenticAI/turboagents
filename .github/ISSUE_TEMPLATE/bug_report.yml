@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a reproducible defect in turboagents
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the problem and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reproducible case you can.
+      placeholder: |
+        1. Run ...
+        2. Pass ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.13"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: "macOS 15 / Linux x86_64 / Windows 11"
+    validations:
+      required: true
+  - type: input
+    id: install
+    attributes:
+      label: Install command
+      placeholder: 'uv sync --extra rag'
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or traceback
+      render: shell

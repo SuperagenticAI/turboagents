@@ -9,6 +9,29 @@ description = "Independent TurboQuant-style compression infrastructure for KV ca
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
+keywords = [
+  "ai",
+  "agents",
+  "compression",
+  "kv-cache",
+  "quantization",
+  "rag",
+  "vector-search",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
 authors = [
   { name = "Superagentic AI", email = "hello@super-agentic.ai" },
   { name = "Shashi Jagtap", email = "shashikant.jagtap@icloud.com" },
@@ -25,7 +48,10 @@ dependencies = [
 Homepage = "https://superoptix.ai"
 Documentation = "https://superagenticai.github.io/turboagents"
 Repository = "https://github.com/SuperagenticAI/turboagents"
+"Source" = "https://github.com/SuperagenticAI/turboagents"
 "Bug Tracker" = "https://github.com/SuperagenticAI/turboagents/issues"
+Changelog = "https://github.com/SuperagenticAI/turboagents/blob/main/CHANGELOG.md"
+Funding = "https://superoptix.ai"
 Support = "https://superoptix.ai"
 Download = "https://pypi.org/project/turboagents/#files"
 
@@ -79,8 +105,35 @@ turboagents = "turboagents.cli.main:main"
 [project.entry-points."vllm.general_plugins"]
 turboagents = "turboagents.engines.vllm_plugin:register"
 
+[dependency-groups]
+test = [
+  "pytest>=8.0",
+]
+docs = [
+  "mkdocs>=1.6.0",
+  "mkdocs-material>=9.5.0",
+]
+dev = [
+  { include-group = "test" },
+  { include-group = "docs" },
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.hatch.build]
+exclude = [
+  ".claude",
+  ".github",
+  ".pytest_cache",
+  "dist",
+  "reference",
+  "site",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["turboagents"]
 
 [tool.pytest.ini_options]
+addopts = "-ra"
 testpaths = ["tests"]

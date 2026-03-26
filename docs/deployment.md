@@ -5,19 +5,19 @@
 Install docs dependencies:
 
 ```bash
-pip install -e ".[docs]"
+uv sync --no-default-groups --group docs
 ```
 
 Run the local docs server:
 
 ```bash
-mkdocs serve
+uv run mkdocs serve
 ```
 
 Build the static site:
 
 ```bash
-mkdocs build
+uv run mkdocs build
 ```
 
 ## GitHub Pages
@@ -33,7 +33,7 @@ Repository:
 The workflow:
 
 1. installs the docs dependencies
-2. runs `mkdocs build`
+2. runs `uv run mkdocs build`
 3. uploads the generated `site/` directory
 4. deploys it to GitHub Pages
 

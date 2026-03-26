@@ -29,6 +29,11 @@ def residual_signs(vector: np.ndarray) -> np.ndarray:
     return signs
 
 
+def _matvec(matrix: np.ndarray, vector: np.ndarray) -> np.ndarray:
+    """Run matrix-vector products via np.dot to avoid spurious matmul warnings."""
+    return np.dot(matrix, vector)
+
+
 def encode_residual(
     residual: np.ndarray,
     *,
@@ -45,7 +50,7 @@ def encode_residual(
         return np.empty(0, dtype=np.int8), 0.0, np.empty(0, dtype=np.float32)
     if residual_norm == 0.0:
         return np.ones(residual.size, dtype=np.int8), 0.0, np.empty(0, dtype=np.float32)
-    sketch = projection_matrix(int(residual.size), seed) @ residual.astype(np.float32)
+    sketch = _matvec(projection_matrix(int(residual.size), seed), residual.astype(np.float32))
     signs = residual_signs(sketch)
     return signs, residual_norm, np.empty(0, dtype=np.float32)
 
@@ -65,7 +70,7 @@ def decode_residual(
         return np.zeros(signs.size, dtype=np.float32)
     proj = projection_matrix(int(signs.size), seed)
     scale = np.float32(np.sqrt(np.pi / 2.0) / float(signs.size) * residual_norm)
-    return scale * (proj.T @ signs.astype(np.float32))
+    return scale * _matvec(proj.T, signs.astype(np.float32))
 
 
 def inner_product(
@@ -86,5 +91,5 @@ def inner_product(
         return 0.0
     proj = projection_matrix(int(signs.size), seed)
     scale = np.float32(np.sqrt(np.pi / 2.0) / float(signs.size) * residual_norm)
-    projected_query = proj @ query.astype(np.float32)
+    projected_query = _matvec(proj, query.astype(np.float32))
     return float(scale * np.dot(projected_query, signs.astype(np.float32)))

@@ -5,16 +5,22 @@
 Core package:
 
 ```bash
-pip install -e .
+uv add turboagents
 ```
 
 Useful extras:
 
 ```bash
-pip install -e ".[bench]"
-pip install -e ".[docs]"
-pip install -e ".[mlx]"
-pip install -e ".[rag]"
+uv add "turboagents[mlx]"
+uv add "turboagents[rag]"
+uv add "turboagents[all]"
+```
+
+Local repository development:
+
+```bash
+uv sync
+uv sync --extra rag
 ```
 
 ## Basic Commands
@@ -40,11 +46,11 @@ python3 examples/mlx_server_dry_run.py
 Run the docs locally:
 
 ```bash
-mkdocs serve
+uv run mkdocs serve
 ```
 
 Build the static site:
 
 ```bash
-mkdocs build
+uv run mkdocs build
 ```
