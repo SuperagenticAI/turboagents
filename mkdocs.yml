@@ -42,6 +42,7 @@ nav:
       - Overview: implemented.md
       - Architecture: architecture.md
       - Adapters: adapters.md
+      - SurrealDB: surrealdb.md
       - CLI: cli.md
       - Benchmarks: benchmarks.md
       - Examples: examples.md

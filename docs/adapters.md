@@ -90,6 +90,8 @@ Current limits:
 
 - this is not the deeper Rust-core codec integration yet
 
+See the dedicated [SurrealDB page](surrealdb.md) for more detail.
+
 ### pgvector
 
 Status: real client adapter surface.
