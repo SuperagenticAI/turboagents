@@ -10,6 +10,8 @@
 compression. It is being built as independent compression infrastructure that
 can be used standalone and integrated into SuperOptix.
 
+Repository: `https://github.com/SuperagenticAI/turboagents`
+
 ## Status
 
 

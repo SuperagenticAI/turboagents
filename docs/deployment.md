@@ -26,6 +26,10 @@ This repository includes a GitHub Actions workflow at:
 
 - `.github/workflows/docs.yml`
 
+Repository:
+
+- `https://github.com/SuperagenticAI/turboagents`
+
 The workflow:
 
 1. installs the docs dependencies
