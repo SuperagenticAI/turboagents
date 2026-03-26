@@ -70,6 +70,7 @@ Supporting scripts:
 - `scripts/run_benchmark_matrix.py`
 - `scripts/benchmark_mlx.py`
 - `scripts/benchmark_rag_adapters.py`
+- `scripts/benchmark_needle.py`
 - `scripts/summarize_benchmark_results.py`
 - `benchmarks/README.md`
 
@@ -179,3 +180,28 @@ Observed behavior on `medium-rag`:
 | pgvector | 3.0 | 2.8430 | 0.874390 | 1.0 | 0.796875 |
 | pgvector | 3.5 | 4.1119 | 0.873350 | 1.0 | 0.837500 |
 | pgvector | 4.0 | 4.8137 | 0.872895 | 1.0 | 0.896875 |
+
+## Minimal Long-Context Eval
+
+The repository now includes a minimal Needle-style long-context harness for MLX:
+
+```bash
+uv run python scripts/benchmark_needle.py \
+  --model mlx-community/Llama-3.2-3B-Instruct-4bit \
+  --context-tokens 2048 4096 8192 \
+  --output benchmark-results/needle-$(date +%Y%m%d-%H%M%S).json
+```
+
+Current scope:
+
+- deterministic exact-match retrieval of a single secret string
+- configurable context lengths
+- configurable insertion positions
+- bit-width sweep across the MLX path
+
+Still out of scope:
+
+- LongBench
+- full Needle-in-a-Haystack reproductions
+- multi-document or multi-hop tasks
+- serving latency matrix integration

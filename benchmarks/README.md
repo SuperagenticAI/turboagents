@@ -48,12 +48,22 @@ uv run python scripts/run_benchmark_matrix.py \
 - `bench-paper.json`: synthetic paper-style report
 - `rag-adapters.json`: FAISS / LanceDB / optional pgvector or SurrealDB results
 - `mlx-benchmark.json`: optional MLX generation sweep
+- `needle-benchmark.json`: optional minimal long-context Needle-style evaluation
 - `summary.md`: generated markdown summary from the artifact set
 
 Generate the markdown summary:
 
 ```bash
 uv run python scripts/summarize_benchmark_results.py benchmark-results/<run-id>
+```
+
+Run the minimal long-context Needle harness directly:
+
+```bash
+uv run python scripts/benchmark_needle.py \
+  --model mlx-community/Llama-3.2-3B-Instruct-4bit \
+  --context-tokens 2048 4096 8192 \
+  --output benchmark-results/needle-$(date +%Y%m%d-%H%M%S).json
 ```
 
 ## Remaining Gaps After This Harness
