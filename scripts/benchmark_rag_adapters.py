@@ -96,7 +96,12 @@ def benchmark_pgvector(
     seed: int,
     dsn: str,
 ) -> dict[str, float]:
-    index = TurboPgvector(dsn=dsn, dim=int(base.shape[1]), bits=bits, seed=seed)
+    table = f"documents_b{str(bits).replace('.', '_')}"
+    index = TurboPgvector(dsn=dsn, table=table, dim=int(base.shape[1]), bits=bits, seed=seed)
+    conn = index.connect()
+    with conn.cursor() as cur:
+        cur.execute(f"DROP TABLE IF EXISTS {table}")
+    conn.commit()
     build_started = time.perf_counter()
     index.ensure_schema()
     index.add(base)
@@ -106,8 +111,15 @@ def benchmark_pgvector(
     query_started = time.perf_counter()
     searches = [index.search(query, k=10, rerank_top=50) for query in queries]
     query_seconds = time.perf_counter() - query_started
-    payload = _summarize_searches(searches, truth, query_seconds)
+    normalized_searches = [
+        [{**item, "index": int(item["index"]) - 1} for item in pred]
+        for pred in searches
+    ]
+    payload = _summarize_searches(normalized_searches, truth, query_seconds)
     payload["build_seconds"] = round(build_seconds, 6)
+    with conn.cursor() as cur:
+        cur.execute(f"DROP TABLE IF EXISTS {table}")
+    conn.commit()
     index.close()
     return payload
 

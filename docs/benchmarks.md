@@ -152,3 +152,30 @@ From this run:
 - `b2.0_mse = 0.192804`
 - `b3.5_mse = 0.029482`
 - `b4.0_mse = 0.014735`
+
+## Live pgvector Validation
+
+Latest artifact set:
+
+- `benchmark-results/20260326-pgvector-adapters-fixed.json`
+
+Validation notes:
+
+- PostgreSQL `17.9` was used locally with the `vector` extension enabled
+- the Python `pgvector` client dependency is now included in `turboagents[rag]`
+- the adapter benchmark was fixed to use isolated tables and normalize database row ids correctly
+
+Observed behavior on `medium-rag`:
+
+- `pgvector` reached `recall@1 = 1.0` across the tested bit-width sweep
+- `recall@10` improved monotonically with higher bit-widths
+- `pgvector` was slower than both FAISS and LanceDB in this current path, at about `0.87s` for the 32-query batch
+- `pgvector` beat LanceDB on `recall@10` at `3.0+` bits in this run
+
+| Adapter | Bits | Build Seconds | Query Seconds | Recall@1 | Recall@10 |
+| --- | --- | --- | --- | --- | --- |
+| pgvector | 2.0 | 1.7564 | 0.865659 | 1.0 | 0.656250 |
+| pgvector | 2.5 | 2.1937 | 0.866529 | 1.0 | 0.718750 |
+| pgvector | 3.0 | 2.8430 | 0.874390 | 1.0 | 0.796875 |
+| pgvector | 3.5 | 4.1119 | 0.873350 | 1.0 | 0.837500 |
+| pgvector | 4.0 | 4.8137 | 0.872895 | 1.0 | 0.896875 |

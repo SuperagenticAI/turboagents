@@ -41,13 +41,14 @@ what is still incomplete.
   - MLX sweep completed on `mlx-community/Llama-3.2-3B-Instruct-4bit`
   - FAISS adapter reached `recall@10 = 1.0` across tested bit-widths on `medium-rag`
   - LanceDB adapter reached `recall@10` in the `0.70` to `0.75` range on `medium-rag`
+  - live PostgreSQL `17` + `pgvector` validation completed locally
+  - pgvector reached `recall@10 = 0.896875` at `4.0` bits on `medium-rag`
 
 ## Not Finished Yet
 
 - final paper-faithful production math
 - true native engine kernels
 - true upstream engine patches
-- live Postgres validation for pgvector on this machine
 - LongBench / Needle / larger benchmark datasets and full long-context benchmark matrix
 - native compressed index implementations for databases
 

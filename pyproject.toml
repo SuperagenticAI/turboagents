@@ -76,6 +76,7 @@ vllm = [
 rag = [
   "faiss-cpu>=1.8.0",
   "lancedb>=0.15.0",
+  "pgvector>=0.3.6",
   "psycopg2-binary>=2.9.0",
   "surrealdb>=1.0.0",
 ]
@@ -93,6 +94,7 @@ all = [
   "vllm>=0.8.0",
   "faiss-cpu>=1.8.0",
   "lancedb>=0.15.0",
+  "pgvector>=0.3.6",
   "psycopg2-binary>=2.9.0",
   "surrealdb>=1.0.0",
   "fastapi>=0.110.0",
