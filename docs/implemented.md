@@ -3,6 +3,15 @@
 This page tracks what exists in the repository today, not the full long-term
 plan.
 
+## Snapshot
+
+| Area | Implemented Now | Main Gap |
+| --- | --- | --- |
+| Quant core | rotation, PolarQuant-style encoding, residual sketch, binary payloads | paper-faithful production math |
+| Benchmarks | synthetic CLI, MLX sweep, adapter matrix, minimal Needle harness | broader public benchmark suites |
+| Engines | MLX, llama.cpp, experimental vLLM | native kernels and upstream patches |
+| TurboRAG | FAISS, LanceDB, SurrealDB, pgvector client adapter | native compressed indexes |
+
 ## Quant Core
 
 Implemented:
@@ -27,10 +36,12 @@ Implemented:
 - `turboagents bench rag`
 - `turboagents bench paper`
 - deterministic built-in synthetic datasets
+- checked-in 128 GB Mac benchmark harness
+- minimal Needle-style long-context evaluation script
 
 Still incomplete:
 
-- LongBench / Needle / BEIR / MTEB integration
+- LongBench / BEIR / MTEB integration
 - end-to-end serving benchmark matrix
 
 ## Engine Adapters
@@ -58,7 +69,6 @@ Implemented:
 
 Still incomplete:
 
-- live Postgres validation on this machine
 - native compressed index implementations
 
 ## Current Validation
@@ -69,3 +79,6 @@ Recent validated checks:
 - cached MLX `3B` smoke test works locally
 - FAISS adapter runs locally
 - SurrealDB embedded mode runs locally
+- live pgvector validation completed on the benchmark machine
+- 128 GB Mac benchmark matrix completed
+- minimal Needle sweep completed and documented

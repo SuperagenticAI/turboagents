@@ -11,6 +11,37 @@ compression.
 
 It is designed to sit under existing AI systems, not replace them.
 
+<div class="hero-panel">
+  <p class="hero-lead">
+    Compression infrastructure for teams that already have agents, model runtimes,
+    and retrieval systems, but need those systems to use less memory and expose
+    quality tradeoffs more clearly.
+  </p>
+  <div class="hero-grid">
+    <div class="hero-card">
+      <h3>Quant Core</h3>
+      <p>Fast Walsh-Hadamard rotation, PolarQuant-style angle/radius encoding, seeded QJL-style residual sketch, and binary payload serialization.</p>
+    </div>
+    <div class="hero-card">
+      <h3>Real Adapters</h3>
+      <p>MLX, llama.cpp, experimental vLLM, plus FAISS, LanceDB, SurrealDB, and pgvector retrieval surfaces.</p>
+    </div>
+    <div class="hero-card">
+      <h3>Validated Benchmarks</h3>
+      <p>128 GB Mac benchmark matrix, MLX sweep, live pgvector validation, and a minimal Needle-style long-context harness.</p>
+    </div>
+  </div>
+</div>
+
+## Quick Snapshot
+
+| Surface | Current Evidence |
+| --- | --- |
+| MLX | cached `3B` smoke test passes and the `3B` sweep completed on the 128 GB Mac |
+| FAISS | `recall@10 = 1.0` across the tested `medium-rag` bit-width sweep |
+| pgvector | live PostgreSQL `17` validation completed, with `recall@10 = 0.896875` at `4.0` bits |
+| Needle | exact-match retrieval only held at insertion fraction `0.1`; not yet robust at `0.5` or `0.9` |
+
 Use it when you already have:
 
 - an agent runtime that is hitting KV-cache or context limits
@@ -29,6 +60,15 @@ TurboAgents is being built as:
 
 It is not an agent framework. It is compression infrastructure for the systems
 you already run.
+
+## Why The Current Version Is Useful
+
+This repository is already useful if you want to:
+
+- test compressed retrieval behavior without writing your own benchmark harness
+- compare FAISS, LanceDB, and pgvector quality/latency tradeoffs on the same synthetic workload
+- prototype MLX-based compressed serving paths locally
+- measure where the current long-context story breaks instead of assuming it works
 
 ## How To Use It
 
@@ -63,8 +103,18 @@ Start with:
 - `turboagents bench kv`
 - `turboagents bench rag`
 - `turboagents compress`
+- `uv run python scripts/run_benchmark_matrix.py --output-dir benchmark-results/<run-id>`
 
 That gives you a low-risk way to decide where deeper integration is worth it.
+
+## Start Here
+
+If you are evaluating the project quickly, use this order:
+
+1. Read [Getting Started](getting-started.md) and install with `uv`.
+2. Run the synthetic CLI benchmarks locally.
+3. Read [Benchmarks](benchmarks.md) for the validated 128 GB Mac results.
+4. Read [Status](status.md) for what is implemented versus what is still incomplete.
 
 ## Current State
 
@@ -81,10 +131,11 @@ Already implemented:
 - llama.cpp runtime wrapper
 - experimental vLLM runtime wrapper
 - reproducible 128 GB Mac benchmark harness with checked-in result artifacts
+- minimal Needle-style long-context evaluation harness
 
 Not finished yet:
 
 - native production kernels
-- LongBench / Needle / larger benchmark reproduction
+- LongBench / larger benchmark reproduction
+- stronger long-context behavior beyond the current early-position Needle retrieval result
 - full long-context benchmark matrix beyond the current 3B MLX and adapter runs
-- live pgvector/Postgres validation on this machine

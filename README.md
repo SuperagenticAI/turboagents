@@ -19,6 +19,67 @@ can be used standalone and integrated into SuperOptix.
 
 Repository: `https://github.com/SuperagenticAI/turboagents`
 
+## Why It Exists
+
+Most AI stacks do not need another agent framework. They need the memory and
+retrieval layer underneath their existing agents to stop getting in the way.
+
+`turboagents` is aimed at that layer:
+
+- compress KV-cache payloads so local and server-side inference can hold more context
+- compress vector payloads so retrieval systems can store and rerank more cheaply
+- benchmark the quality, latency, and recall tradeoffs explicitly instead of hiding them
+- integrate with runtimes and vector backends teams already use
+
+## At A Glance
+
+| Area | Current State |
+| --- | --- |
+| Quant core | Fast Walsh-Hadamard rotation, PolarQuant-style angle/radius stage, seeded QJL-style residual sketch, binary payloads |
+| Engines | MLX wrapper, llama.cpp wrapper, experimental vLLM wrapper/plugin scaffold |
+| Retrieval | FAISS, LanceDB, SurrealDB, and pgvector client adapters |
+| Benchmarks | Synthetic CLI, 128 GB Mac benchmark matrix, MLX sweep, adapter matrix, minimal Needle harness |
+| Packaging | `uv`-first local workflow, docs, CI, release workflow, PyPI package |
+
+## Quick Proof Points
+
+The repository now has benchmark evidence, not just API surface:
+
+- FAISS reached `recall@10 = 1.0` across the tested bit-width sweep on `medium-rag`
+- pgvector reached `recall@10 = 0.896875` at `4.0` bits on `medium-rag`
+- the MLX `3B` sweep showed `3.5` bits as the current best quality/performance operating point on this machine
+- the minimal Needle long-context run showed early-position retrieval, but not robust mid/late-position retrieval
+
+That matters because the repo can now make narrower, defensible claims:
+
+- it already works as compression infrastructure and benchmark tooling
+- it does not yet justify broad long-context quality claims
+
+## Fast Start
+
+Install the package:
+
+```bash
+uv add turboagents
+```
+
+Install with useful extras:
+
+```bash
+uv add "turboagents[mlx]"
+uv add "turboagents[rag]"
+uv add "turboagents[all]"
+```
+
+Try the CLI first:
+
+```bash
+turboagents doctor
+turboagents bench kv --format json
+turboagents bench rag --format markdown
+turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
+```
+
 ## What It Is
 
 `turboagents` is not an agent framework. It is the compression layer you put
@@ -117,6 +178,24 @@ Examples:
 - `TurboSurrealDB` for SurrealDB candidate search + TurboAgents rerank
 - `TurboPgvector` for PostgreSQL-backed storage and retrieval
 
+## Benchmarks Snapshot
+
+Latest validated benchmark work:
+
+| Surface | Result |
+| --- | --- |
+| MLX sweep | `3.5` bits was the best current quality/performance tradeoff on `mlx-community/Llama-3.2-3B-Instruct-4bit` |
+| FAISS | `recall@1 = 1.0`, `recall@10 = 1.0` across the tested sweep |
+| LanceDB | `recall@10` landed in the `0.70` to `0.75` range on `medium-rag` |
+| pgvector | `recall@10` improved monotonically up to `0.896875` at `4.0` bits |
+| Needle | exact match held for insertion fraction `0.1`, but failed at `0.5` and `0.9` |
+
+For the full numbers, see:
+
+- [docs/benchmarks.md](docs/benchmarks.md)
+- [docs/status.md](docs/status.md)
+- [benchmark-results/20260326-128gb-run/summary.md](benchmark-results/20260326-128gb-run/summary.md)
+
 ## Current Status
 
 
@@ -140,8 +219,8 @@ Still not finished:
 
 - full paper-faithful production math
 - native engine kernels for llama.cpp / MLX / vLLM
-- live Postgres validation for pgvector on this machine
-- large benchmark datasets and long-context benchmark matrix
+- larger benchmark datasets and stronger long-context evaluation
+- production-strength long-context quality claims
 
 ## Install
 
@@ -199,6 +278,14 @@ Common local commands:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m pytest -q
 uv run mkdocs serve
 uv build
+```
+
+Benchmark harness commands:
+
+```bash
+uv sync --extra rag --extra mlx
+uv run python scripts/run_benchmark_matrix.py --output-dir benchmark-results/$(date +%Y%m%d-%H%M%S)
+uv run python scripts/benchmark_needle.py --model mlx-community/Llama-3.2-3B-Instruct-4bit --context-tokens 2048 4096 8192 --output benchmark-results/needle-$(date +%Y%m%d-%H%M%S).json
 ```
 
 Community and project health files:
