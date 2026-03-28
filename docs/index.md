@@ -73,54 +73,42 @@ Use it when you already have:
 
 ## What TurboAgents Is
 
-TurboAgents is being built as:
-
-- a reusable quantization core
-- a benchmark surface
-- a set of engine adapters
-- a set of TurboRAG adapters
-
-It is not an agent framework. It is compression infrastructure for the systems
-you already run.
+TurboAgents combines a reusable quantization core, runnable benchmark
+surfaces, engine wrappers, and retrieval adapters in one package. The point is
+not to give you a new orchestration layer. The point is to make the runtime and
+retrieval layers underneath your existing stack cheaper, smaller, and easier to
+measure.
 
 ## Why The Current Version Is Useful
 
-This repository is already useful if you want to:
-
-- test compressed retrieval behavior without writing your own benchmark harness
-- compare FAISS, LanceDB, and pgvector quality/latency tradeoffs on the same synthetic workload
-- prototype MLX-based compressed serving paths locally
-- measure where the current long-context story breaks instead of assuming it works
+The current version is already useful if you want to test compressed retrieval
+behavior without writing your own harness, compare FAISS, LanceDB, Chroma, and
+pgvector on the same synthetic workload, script MLX-based serving paths, or get
+hard numbers about where the current long-context story holds and where it
+fails. It is a practical package now, not just an experimental code dump.
 
 ## How To Use It
 
-Most users should use TurboAgents in one of three ways:
+Most users land in one of three entry points.
 
 ### Under An Existing Agent Runtime
 
 Keep your current agent framework and use TurboAgents to improve the runtime
-under it.
-
-Examples:
-
-- MLX-based local agents
-- llama.cpp-based local agents
-- experimental vLLM-backed serving stacks
+under it. The current package is best suited to MLX-based local agents,
+llama.cpp-based local stacks, and experimental vLLM-backed serving paths where
+you want to inspect the runtime contract without rewriting the rest of the
+application.
 
 ### Under An Existing RAG Stack
 
 Keep your current application logic and use TurboAgents in the retrieval layer.
-
-Examples:
-
-- FAISS-backed local retrieval
-- Chroma candidate search plus TurboAgents rerank
-- LanceDB or SurrealDB candidate search plus TurboAgents rerank
-- pgvector-backed retrieval in PostgreSQL applications
+That can mean FAISS-backed local retrieval, Chroma candidate search with a
+TurboAgents rerank pass, LanceDB or SurrealDB sidecar retrieval, or a
+PostgreSQL application that already depends on pgvector.
 
 ### As A Benchmark And Compression Tool
 
-Start with:
+If you are still evaluating fit, start with the CLI:
 
 - `turboagents doctor`
 - `turboagents bench kv`
@@ -145,27 +133,18 @@ If you are evaluating the project quickly, use this order:
 TurboAgents is designed to stay standalone, but the first full reference
 integration is now SuperOptiX.
 
-That integration currently proves:
-
-- `turboagents-chroma` works as a SuperOptiX retrieval option
-- `turboagents-lancedb` works end to end in the SuperOptiX LanceDB demo
-- `turboagents-surrealdb` works end to end in the SuperOptiX OpenAI Agents and
-  Pydantic AI demos
+That integration currently proves that `turboagents-chroma` works as a
+SuperOptiX retrieval option, `turboagents-lancedb` works end to end in the
+LanceDB demo, and `turboagents-surrealdb` works end to end in the OpenAI
+Agents and Pydantic AI demo paths.
 
 If you want the end-to-end application story rather than the package-only API,
 read the SuperOptiX TurboAgents guide after this page.
 
 ## Included In This Release
 
-- structured quant payloads with binary serialization
-- Fast Walsh-Hadamard rotation
-- PolarQuant-style angle/radius encoding
-- seeded QJL-style residual sketch
-- synthetic benchmark CLI
-- real Chroma, FAISS, LanceDB, and SurrealDB adapter surfaces
-- pgvector client adapter surface
-- MLX runtime and server wrapper
-- llama.cpp runtime wrapper
-- experimental vLLM runtime wrapper
-- reproducible benchmark harness with checked-in result artifacts
-- minimal Needle-style long-context evaluation harness
+This release includes the quantization core, binary payload serialization,
+synthetic benchmark CLI, Chroma and FAISS retrieval paths, LanceDB and
+SurrealDB sidecar adapters, a pgvector client adapter, MLX and llama.cpp
+runtime wrappers, an experimental vLLM wrapper, the checked-in benchmark
+harness, and the minimal Needle-style long-context evaluation surface.

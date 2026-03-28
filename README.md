@@ -8,15 +8,19 @@
   <a href="https://pypi.org/project/turboagents/"><img src="https://img.shields.io/pypi/v/turboagents.svg" alt="PyPI"></a>
   <a href="https://pypi.org/project/turboagents/"><img src="https://img.shields.io/pypi/pyversions/turboagents.svg" alt="Python versions"></a>
   <a href="https://github.com/SuperagenticAI/turboagents/actions/workflows/ci.yml"><img src="https://github.com/SuperagenticAI/turboagents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://superagenticai.github.io/turboagents/"><img src="https://img.shields.io/badge/docs-live-black.svg" alt="Docs"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-black.svg" alt="License"></a>
 </p>
 
-**Turbocharge AI Agents with TurboQuant**
+**Compression Infrastructure For Agent Runtimes And Retrieval Stacks**
 
 `turboagents` is a single Python package for TurboQuant-style KV-cache and vector
-compression. It is being built as independent compression infrastructure that
-can be used standalone and integrated into SuperOptix.
+compression. It is designed to sit underneath existing AI systems, not replace
+them. If you already have an agent framework, a local inference stack, or a
+RAG pipeline, TurboAgents gives you a way to add compression, reranking, and
+benchmarking without rebuilding the rest of your application.
 
+Docs: `https://superagenticai.github.io/turboagents/`  
 Repository: `https://github.com/SuperagenticAI/turboagents`
 
 ## Why It Exists
@@ -41,24 +45,31 @@ retrieval layer underneath their existing agents to stop getting in the way.
 | Benchmarks | Synthetic CLI, benchmark matrix, MLX sweep, adapter matrix, minimal Needle harness |
 | Packaging | `uv`-first local workflow, docs, CI, release workflow, PyPI package |
 
-## Quick Proof Points
+## What You Can Use Today
 
-The repository now has benchmark evidence, not just API surface:
+The package is already useful in three common situations. If you are running
+local agents, the MLX and llama.cpp wrappers give you a clean way to script and
+inspect runtime paths. If you are running retrieval, the TurboRAG adapters let
+you keep Chroma, FAISS, LanceDB, SurrealDB, or pgvector in place while adding a
+compressed rerank layer. If you are still evaluating fit, the built-in
+benchmarks give you a narrow and repeatable way to measure payload size,
+reconstruction quality, and retrieval agreement before you change application
+code.
 
-- Chroma reached `recall@10 = 1.0` across the tested bit-width sweep in the local adapter benchmark
-- FAISS reached `recall@10 = 1.0` across the tested bit-width sweep on `medium-rag`
-- pgvector reached `recall@10 = 0.896875` at `4.0` bits on `medium-rag`
-- the MLX `3B` sweep showed `3.5` bits as the best quality/performance operating point in that run
-- the minimal Needle long-context run showed early-position retrieval, but not robust mid/late-position retrieval
+The benchmark story is also real, not just conceptual. Chroma and FAISS both
+held `recall@10 = 1.0` on the validated adapter sweep, pgvector reached
+`recall@10 = 0.896875` at `4.0` bits, and the current MLX 3B run showed `3.5`
+bits as the best quality and throughput tradeoff in that configuration. The
+long-context story is intentionally narrower: the minimal Needle harness shows
+early-position retrieval, but not robust mid- or late-position recall.
 
-That matters because the repo can now make narrower, defensible claims:
-
-- it already works as compression infrastructure and benchmark tooling
-- it does not yet justify broad long-context quality claims
+That is the right way to read this project today. TurboAgents is ready to use
+as compression infrastructure and benchmark tooling. It is not yet making broad
+claims about long-context quality or production-native kernels.
 
 ## Fast Start
 
-Install the package:
+Install the package with `uv`:
 
 ```bash
 uv add turboagents
@@ -81,23 +92,25 @@ turboagents bench rag --format markdown
 turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
 ```
 
+If you prefer to browse before installing, start with the public docs:
+
+- `https://superagenticai.github.io/turboagents/`
+- `https://superagenticai.github.io/turboagents/getting-started/`
+- `https://superagenticai.github.io/turboagents/benchmarks/`
+
 ## Reference Integration
 
 TurboAgents stays framework-agnostic, but the first full reference integration
 is now in SuperOptiX.
 
-That matters because the current validated story is not only package-level unit
-tests. It also includes real SuperOptiX retrieval paths using TurboAgents under
+That matters because the validated story is not limited to package-level tests.
+It also includes real SuperOptiX retrieval paths using TurboAgents under
 framework runtimes.
-
-Current reference-integration status:
 
 - `turboagents-chroma` is wired into SuperOptiX and covered by focused runtime tests
 - `turboagents-lancedb` is validated through the real `rag_lancedb_demo` flow
 - `turboagents-surrealdb` is validated through the real SuperOptiX OpenAI Agents
   and Pydantic AI demo flows
-- the DSPy SurrealDB path is still blocked by a local LiteLLM/Ollama compatibility
-  issue, not by the TurboAgents retrieval layer itself
 
 If you want the end-to-end integration story, start here after installing
 TurboAgents:
@@ -136,7 +149,7 @@ Think of it as:
 
 ## How To Use It
 
-Most users should think about `turboagents` in three ways.
+Most users approach TurboAgents in one of three ways.
 
 ### 1. Add It Under An Existing Agent Runtime
 
@@ -173,42 +186,6 @@ your stack, use the CLI first:
 
 That gives you a way to validate fit before deeper integration work.
 
-## Usage Patterns
-
-### Existing Agent + MLX
-
-Use TurboAgents to build or validate the MLX runtime path, then keep your
-existing agent code on top.
-
-```bash
-turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
-```
-
-### Existing RAG + FAISS
-
-Use TurboRAG as the retrieval layer while keeping your current ingestion and
-agent orchestration logic.
-
-```python
-from turboagents.rag import TurboFAISS
-
-index = TurboFAISS(dim=128, bits=3.5, seed=0)
-index.add(vectors)
-results = index.search(query, k=5, rerank_top=16)
-```
-
-### Existing Vector Database
-
-If you already use a database-backed vector layer, TurboAgents should sit beside
-that store first, then move deeper only if it proves useful.
-
-Examples:
-
-- `TurboChroma` for Chroma candidate search + TurboAgents rerank
-- `TurboLanceDB` for LanceDB candidate search + TurboAgents rerank
-- `TurboSurrealDB` for SurrealDB candidate search + TurboAgents rerank
-- `TurboPgvector` for PostgreSQL-backed storage and retrieval
-
 ## Chroma and Context-1
 
 TurboAgents now includes a Chroma adapter aligned to `chromadb 1.5.5`.
@@ -233,50 +210,22 @@ Latest validated benchmark work:
 | pgvector | `recall@10` improved monotonically up to `0.896875` at `4.0` bits |
 | Needle | exact match held for insertion fraction `0.1`, but failed at `0.5` and `0.9` |
 
-For the full numbers, see:
+If you want the full numbers and command paths, see:
 
 - [docs/benchmarks.md](docs/benchmarks.md)
-- [docs/status.md](docs/status.md)
 - [benchmark-results/20260326-128gb-run/summary.md](benchmark-results/20260326-128gb-run/summary.md)
 
 ## Docs Map
 
-For the shortest path through this repo:
+For the shortest path through the public docs:
 
 1. [docs/getting-started.md](docs/getting-started.md) for install and first commands
 2. [docs/adapters.md](docs/adapters.md) for backend-specific retrieval surfaces
 3. [docs/examples.md](docs/examples.md) for runnable local examples
 4. [docs/benchmarks.md](docs/benchmarks.md) for validated benchmark numbers
-5. [docs/status.md](docs/status.md) for what is implemented versus still incomplete
+5. [docs/architecture.md](docs/architecture.md) for the runtime and retrieval layout
 
-## Current Status
-
-
-- structured quantization payloads with binary serialization
-- Fast Walsh-Hadamard rotation with cached sign patterns
-- PolarQuant-style spherical angle/radius stage
-- seeded QJL-style residual sketch
-- synthetic benchmark CLI with KV, RAG, and paper-style reports
-- real adapter surfaces for:
-  - Chroma
-  - FAISS
-  - LanceDB
-  - SurrealDB
-  - pgvector client adapter
-  - MLX runtime/server wrapper
-  - llama.cpp runtime wrapper
-  - experimental vLLM runtime wrapper
-- proxy/server baseline
-- lightweight examples and docs
-
-Still not finished:
-
-- full paper-faithful production math
-- native engine kernels for llama.cpp / MLX / vLLM
-- larger benchmark datasets and stronger long-context evaluation
-- production-strength long-context quality claims
-
-## Install
+## Install And CLI Reference
 
 ```bash
 uv add turboagents
@@ -298,7 +247,7 @@ uv sync
 uv sync --extra rag
 ```
 
-## CLI
+## Core CLI
 
 ```bash
 turboagents doctor
@@ -320,19 +269,13 @@ python3 examples/chroma_turborag.py
 python3 examples/mlx_server_dry_run.py
 ```
 
-## Current Local Validation
-
-- cached MLX 3B smoke test succeeded on `mlx-community/Llama-3.2-3B-Instruct-4bit`
-- Chroma adapter smoke run succeeded on `chromadb 1.5.5`
-- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m pytest -q` passes
-
 ## Development
 
 Common local commands:
 
 ```bash
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m pytest -q
-uv run mkdocs serve
+uv run mkdocs serve -f mkdocs.local.yml
 uv build
 ```
 

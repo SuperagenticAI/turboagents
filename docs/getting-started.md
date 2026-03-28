@@ -1,17 +1,18 @@
 # Getting Started
 
-This page is the fastest path to running the package locally with the current
-`uv`-first workflow.
+This page is the shortest path from install to a real command. If you only want
+to confirm that the package is wired correctly, you should be able to go from
+zero to a working benchmark or dry-run serve command in a few minutes.
 
 ## Install
 
-Core package:
+Start with the core package:
 
 ```bash
 uv add turboagents
 ```
 
-Useful extras:
+Then add extras only for the path you actually need:
 
 ```bash
 uv add "turboagents[mlx]"
@@ -19,7 +20,7 @@ uv add "turboagents[rag]"
 uv add "turboagents[all]"
 ```
 
-Local repository development:
+If you are working from the repository directly:
 
 ```bash
 uv sync
@@ -29,7 +30,7 @@ uv sync --extra rag --extra mlx
 
 ## First Five Minutes
 
-If you only want to verify that the project is wired correctly, run:
+If you only want to verify that the project is healthy, run:
 
 ```bash
 turboagents doctor
@@ -38,7 +39,7 @@ turboagents bench rag
 turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
 ```
 
-## Basic Commands
+These are the core commands most users will touch first:
 
 ```bash
 turboagents doctor
@@ -48,9 +49,10 @@ turboagents bench paper
 turboagents compress --input vectors.npy --output vectors.npz --head-dim 128
 ```
 
-## Higher-Memory Benchmark Workflow
+## Full Benchmark Workflow
 
-For the full benchmark workflow:
+When you want the larger benchmark matrix rather than the synthetic CLI checks,
+use the scripts directly:
 
 ```bash
 uv sync --extra rag --extra mlx
@@ -59,6 +61,9 @@ uv run python scripts/benchmark_needle.py --model mlx-community/Llama-3.2-3B-Ins
 ```
 
 ## Example Scripts
+
+The example scripts are intentionally small. They are meant to show the shape
+of the API and the runtime contract, not hide everything behind a framework.
 
 ```bash
 python3 examples/quickstart.py
@@ -70,10 +75,10 @@ python3 examples/mlx_server_dry_run.py
 
 ## Docs
 
-Run the docs locally:
+For local docs preview:
 
 ```bash
-uv run mkdocs serve
+uv run mkdocs serve -f mkdocs.local.yml
 ```
 
 Build the static site:
@@ -82,7 +87,7 @@ Build the static site:
 uv run mkdocs build
 ```
 
-Useful follow-up pages:
+If you are deciding where to go next, these are the useful follow-up pages:
 
 - [Benchmarks](benchmarks.md)
 - [Architecture](architecture.md)

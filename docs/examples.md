@@ -1,29 +1,23 @@
 # Examples
 
-Current package examples:
+The package examples are intentionally small and direct. They are meant to show
+the API shape, the runtime contract, and the retrieval flow without hiding
+everything behind framework-specific abstractions.
 
-- `examples/quickstart.py`
-  - basic quantize / serialize / dequantize flow
-- `examples/bench_profiles.py`
-  - prints the current KV, RAG, and paper-style synthetic benchmark reports
-- `examples/mlx_server_dry_run.py`
-  - shows the MLX server command TurboAgents builds for local serving
-- `examples/faiss_turborag.py`
-  - uses the live FAISS-backed TurboRAG adapter on a small local dataset
-- `examples/chroma_turborag.py`
-  - uses the Chroma-backed TurboRAG adapter on a small local dataset
+`examples/quickstart.py` covers the core quantize, serialize, and dequantize
+path. `examples/bench_profiles.py` prints the current KV, RAG, and paper-style
+synthetic benchmark reports. `examples/mlx_server_dry_run.py` shows the MLX
+server command TurboAgents builds for local serving. `examples/faiss_turborag.py`
+and `examples/chroma_turborag.py` show the live FAISS-backed and Chroma-backed
+TurboRAG adapters on small local datasets.
 
 ## Reference Integration Examples
 
-If you want the fully integrated application path rather than just package
-examples, use the SuperOptiX reference integration:
-
-- `rag_lancedb_demo`
-  - validates `turboagents-lancedb` through a real SuperOptiX demo flow
-- `rag_surrealdb_openai_demo`
-  - validates `turboagents-surrealdb` with the OpenAI Agents runtime in SuperOptiX
-- `rag_surrealdb_pydanticai_demo`
-  - validates `turboagents-surrealdb` with the Pydantic AI runtime in SuperOptiX
+If you want the fully integrated application path rather than package-only
+examples, use the SuperOptiX reference integration. `rag_lancedb_demo`
+validates `turboagents-lancedb` through a real SuperOptiX demo flow.
+`rag_surrealdb_openai_demo` and `rag_surrealdb_pydanticai_demo` validate
+`turboagents-surrealdb` under real framework runtimes inside SuperOptiX.
 
 The matching guide lives in the SuperOptiX docs:
 
@@ -31,9 +25,8 @@ The matching guide lives in the SuperOptiX docs:
 
 ## Recommended Starting Point
 
-Start with:
-
-- synthetic CLI benchmarks
-- FAISS or Chroma adapter examples
-- MLX dry-run command generation
-- the SuperOptiX reference demos when you want end-to-end application coverage
+If you are choosing a starting point, begin with the synthetic CLI benchmarks
+and then move to the FAISS or Chroma examples. Use the MLX dry-run path when
+you care about serving integration, and use the SuperOptiX reference demos when
+you want full end-to-end application coverage rather than package-level API
+examples.
