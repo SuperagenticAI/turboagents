@@ -10,7 +10,7 @@ plan.
 | Quant core | rotation, PolarQuant-style encoding, residual sketch, binary payloads | paper-faithful production math |
 | Benchmarks | synthetic CLI, MLX sweep, adapter matrix, minimal Needle harness | broader public benchmark suites |
 | Engines | MLX, llama.cpp, experimental vLLM | native kernels and upstream patches |
-| TurboRAG | FAISS, LanceDB, SurrealDB, pgvector client adapter | native compressed indexes |
+| TurboRAG | Chroma, FAISS, LanceDB, SurrealDB, pgvector client adapter | native compressed indexes |
 
 ## Quant Core
 
@@ -63,6 +63,7 @@ Still incomplete:
 Implemented:
 
 - real FAISS-backed adapter
+- real Chroma-backed adapter
 - real LanceDB-backed adapter
 - real SurrealDB-backed adapter
 - pgvector client adapter
@@ -78,6 +79,7 @@ Recent validated checks:
 - full test suite passes
 - cached MLX `3B` smoke test works locally
 - FAISS adapter runs locally
+- Chroma adapter smoke test passes locally against `chromadb 1.5.5`
 - SurrealDB embedded mode runs locally
 - live pgvector validation completed on the benchmark machine
 - 128 GB Mac benchmark matrix completed

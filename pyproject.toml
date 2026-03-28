@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "turboagents"
-version = "0.1.0a0"
+version = "0.1.0a2"
 description = "Independent TurboQuant-style compression infrastructure for KV cache and RAG."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -74,6 +74,7 @@ vllm = [
   "vllm>=0.8.0",
 ]
 rag = [
+  "chromadb>=1.5.5",
   "faiss-cpu>=1.8.0",
   "lancedb>=0.15.0",
   "pgvector>=0.3.6",
@@ -92,6 +93,7 @@ all = [
   "mlx>=0.24.0",
   "mlx-lm>=0.20.0",
   "vllm>=0.8.0",
+  "chromadb>=1.5.5",
   "faiss-cpu>=1.8.0",
   "lancedb>=0.15.0",
   "pgvector>=0.3.6",
@@ -125,6 +127,7 @@ default-groups = ["dev"]
 
 [tool.hatch.build]
 exclude = [
+  ".uv-cache",
   ".claude",
   ".github",
   ".pytest_cache",

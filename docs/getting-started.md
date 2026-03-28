@@ -50,7 +50,7 @@ turboagents compress --input vectors.npy --output vectors.npz --head-dim 128
 
 ## Higher-Memory Benchmark Workflow
 
-For the validated benchmark flow used on the 128 GB Mac:
+For the full benchmark workflow:
 
 ```bash
 uv sync --extra rag --extra mlx
@@ -64,6 +64,7 @@ uv run python scripts/benchmark_needle.py --model mlx-community/Llama-3.2-3B-Ins
 python3 examples/quickstart.py
 python3 examples/bench_profiles.py
 python3 examples/faiss_turborag.py
+python3 examples/chroma_turborag.py
 python3 examples/mlx_server_dry_run.py
 ```
 
@@ -83,6 +84,6 @@ uv run mkdocs build
 
 Useful follow-up pages:
 
-- [Status](status.md)
 - [Benchmarks](benchmarks.md)
-- [Implemented](implemented.md)
+- [Architecture](architecture.md)
+- [Adapters](adapters.md)

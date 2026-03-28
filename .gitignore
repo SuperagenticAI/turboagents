@@ -2,6 +2,8 @@
 reference/
 site/
 benchmark-results/
+data/
+.uv-cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

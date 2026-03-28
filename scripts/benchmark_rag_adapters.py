@@ -16,7 +16,13 @@ import numpy as np
 
 from turboagents.bench.datasets import make_vector_dataset
 from turboagents.quant.config import SUPPORTED_BITS
-from turboagents.rag import TurboFAISS, TurboLanceDB, TurboPgvector, TurboSurrealDB
+from turboagents.rag import (
+    TurboChroma,
+    TurboFAISS,
+    TurboLanceDB,
+    TurboPgvector,
+    TurboSurrealDB,
+)
 
 
 def _recall_at_k(pred: list[int], truth: list[int]) -> float:
@@ -67,6 +73,28 @@ def benchmark_faiss(base: np.ndarray, queries: np.ndarray, bits: float, seed: in
     payload = _summarize_searches(searches, truth, query_seconds)
     payload["build_seconds"] = round(build_seconds, 6)
     return payload
+
+
+def benchmark_chroma(base: np.ndarray, queries: np.ndarray, bits: float, seed: int) -> dict[str, float]:
+    with tempfile.TemporaryDirectory(prefix="turboagents-chroma-") as tmpdir:
+        index = TurboChroma(
+            path=tmpdir,
+            collection_name="bench_vectors",
+            dim=int(base.shape[1]),
+            bits=bits,
+            seed=seed,
+        )
+        build_started = time.perf_counter()
+        index.create_collection("bench_vectors", base)
+        build_seconds = time.perf_counter() - build_started
+
+        truth = _exact_rankings(base, queries)
+        query_started = time.perf_counter()
+        searches = [index.search(query, k=10, rerank_top=50) for query in queries]
+        query_seconds = time.perf_counter() - query_started
+        payload = _summarize_searches(searches, truth, query_seconds)
+        payload["build_seconds"] = round(build_seconds, 6)
+        return payload
 
 
 def benchmark_lancedb(base: np.ndarray, queries: np.ndarray, bits: float, seed: int) -> dict[str, float]:
@@ -163,8 +191,8 @@ def main() -> int:
     parser.add_argument(
         "--adapters",
         nargs="+",
-        default=["faiss", "lancedb"],
-        choices=["faiss", "lancedb", "pgvector", "surrealdb"],
+        default=["chroma", "faiss", "lancedb"],
+        choices=["chroma", "faiss", "lancedb", "pgvector", "surrealdb"],
     )
     parser.add_argument(
         "--bits",
@@ -198,6 +226,8 @@ def main() -> int:
             try:
                 if adapter == "faiss":
                     adapter_results[str(bits)] = benchmark_faiss(base, queries, bits, args.seed)
+                elif adapter == "chroma":
+                    adapter_results[str(bits)] = benchmark_chroma(base, queries, bits, args.seed)
                 elif adapter == "lancedb":
                     adapter_results[str(bits)] = benchmark_lancedb(base, queries, bits, args.seed)
                 elif adapter == "pgvector":

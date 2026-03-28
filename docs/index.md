@@ -4,19 +4,17 @@
   <img src="assets/logo.png" alt="turboagents logo">
 </div>
 
-**Turbocharge AI Agents with TurboQuant**
-
-`turboagents` is a Python package for TurboQuant-style KV-cache and vector
-compression.
-
-It is designed to sit under existing AI systems, not replace them.
-
 <div class="hero-panel">
+  <div class="hero-kicker">Compression Infrastructure For Real Systems</div>
+  <h1 class="hero-title">TurboQuant for agent runtimes and retrieval stacks</h1>
   <p class="hero-lead">
-    Compression infrastructure for teams that already have agents, model runtimes,
-    and retrieval systems, but need those systems to use less memory and expose
-    quality tradeoffs more clearly.
+    <code>turboagents</code> is a Python package for TurboQuant-style KV-cache and vector compression. It is designed to sit under existing AI systems, not replace them.
   </p>
+  <div class="hero-actions">
+    <a class="hero-action primary" href="getting-started.html">Start With uv</a>
+    <a class="hero-action secondary" href="benchmarks.html">See Benchmarks</a>
+    <a class="hero-action secondary" href="adapters.html">Browse Adapters</a>
+  </div>
   <div class="hero-grid">
     <div class="hero-card">
       <h3>Quant Core</h3>
@@ -24,12 +22,31 @@ It is designed to sit under existing AI systems, not replace them.
     </div>
     <div class="hero-card">
       <h3>Real Adapters</h3>
-      <p>MLX, llama.cpp, experimental vLLM, plus FAISS, LanceDB, SurrealDB, and pgvector retrieval surfaces.</p>
+      <p>MLX, llama.cpp, experimental vLLM, plus Chroma, FAISS, LanceDB, SurrealDB, and pgvector retrieval surfaces.</p>
     </div>
     <div class="hero-card">
       <h3>Validated Benchmarks</h3>
-      <p>128 GB Mac benchmark matrix, MLX sweep, live pgvector validation, and a minimal Needle-style long-context harness.</p>
+      <p>Benchmark matrix, MLX sweep, live pgvector validation, and a minimal Needle-style long-context harness.</p>
     </div>
+  </div>
+</div>
+
+<div class="signal-grid">
+  <div class="signal-card">
+    <strong>Perfect Top-10 Recall</strong>
+    <span>Chroma and FAISS both held full top-10 retrieval accuracy on the validated benchmark sweep.</span>
+  </div>
+  <div class="signal-card">
+    <strong>Strong PostgreSQL Path</strong>
+    <span>pgvector reached 0.896875 top-10 recall at 4.0 bits in live PostgreSQL validation.</span>
+  </div>
+  <div class="signal-card">
+    <strong>Best MLX Tradeoff</strong>
+    <span>3.5 bits was the best quality and throughput balance in the 3B MLX benchmark run.</span>
+  </div>
+  <div class="signal-card">
+    <strong>Reference Integration</strong>
+    <span>SuperOptiX is the first full application integration with real demo and retrieval coverage.</span>
   </div>
 </div>
 
@@ -37,17 +54,22 @@ It is designed to sit under existing AI systems, not replace them.
 
 | Surface | Current Evidence |
 | --- | --- |
-| MLX | cached `3B` smoke test passes and the `3B` sweep completed on the 128 GB Mac |
+| Chroma | local adapter benchmark reached `recall@10 = 1.0` across the tested bit-width sweep |
+| MLX | cached `3B` smoke test passes and the `3B` sweep identified `3.5` bits as the best current tradeoff |
 | FAISS | `recall@10 = 1.0` across the tested `medium-rag` bit-width sweep |
 | pgvector | live PostgreSQL `17` validation completed, with `recall@10 = 0.896875` at `4.0` bits |
 | Needle | exact-match retrieval only held at insertion fraction `0.1`; not yet robust at `0.5` or `0.9` |
+
+<div class="section-band">
 
 Use it when you already have:
 
 - an agent runtime that is hitting KV-cache or context limits
 - a RAG stack with growing vector storage cost
 - an inference layer built on MLX, llama.cpp, or vLLM
-- a retrieval layer built on FAISS, LanceDB, SurrealDB, or pgvector
+- a retrieval layer built on Chroma, FAISS, LanceDB, SurrealDB, or pgvector
+
+</div>
 
 ## What TurboAgents Is
 
@@ -92,6 +114,7 @@ Keep your current application logic and use TurboAgents in the retrieval layer.
 Examples:
 
 - FAISS-backed local retrieval
+- Chroma candidate search plus TurboAgents rerank
 - LanceDB or SurrealDB candidate search plus TurboAgents rerank
 - pgvector-backed retrieval in PostgreSQL applications
 
@@ -113,29 +136,36 @@ If you are evaluating the project quickly, use this order:
 
 1. Read [Getting Started](getting-started.md) and install with `uv`.
 2. Run the synthetic CLI benchmarks locally.
-3. Read [Benchmarks](benchmarks.md) for the validated 128 GB Mac results.
-4. Read [Status](status.md) for what is implemented versus what is still incomplete.
+3. Read [Adapters](adapters.md) and [Examples](examples.md) to pick the backend path you actually need.
+4. Read [Benchmarks](benchmarks.md) for the current benchmark results.
+5. Read [Architecture](architecture.md) if you want the runtime and retrieval layout.
 
-## Current State
+## Reference Integration
 
-Already implemented:
+TurboAgents is designed to stay standalone, but the first full reference
+integration is now SuperOptiX.
+
+That integration currently proves:
+
+- `turboagents-chroma` works as a SuperOptiX retrieval option
+- `turboagents-lancedb` works end to end in the SuperOptiX LanceDB demo
+- `turboagents-surrealdb` works end to end in the SuperOptiX OpenAI Agents and
+  Pydantic AI demos
+
+If you want the end-to-end application story rather than the package-only API,
+read the SuperOptiX TurboAgents guide after this page.
+
+## Included In This Release
 
 - structured quant payloads with binary serialization
 - Fast Walsh-Hadamard rotation
 - PolarQuant-style angle/radius encoding
 - seeded QJL-style residual sketch
 - synthetic benchmark CLI
-- real FAISS, LanceDB, and SurrealDB adapter surfaces
+- real Chroma, FAISS, LanceDB, and SurrealDB adapter surfaces
 - pgvector client adapter surface
-- MLX runtime/server wrapper
+- MLX runtime and server wrapper
 - llama.cpp runtime wrapper
 - experimental vLLM runtime wrapper
-- reproducible 128 GB Mac benchmark harness with checked-in result artifacts
+- reproducible benchmark harness with checked-in result artifacts
 - minimal Needle-style long-context evaluation harness
-
-Not finished yet:
-
-- native production kernels
-- LongBench / larger benchmark reproduction
-- stronger long-context behavior beyond the current early-position Needle retrieval result
-- full long-context benchmark matrix beyond the current 3B MLX and adapter runs

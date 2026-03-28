@@ -22,6 +22,7 @@ what is still incomplete.
   - llama.cpp wrapper
   - experimental vLLM wrapper
 - TurboRAG surfaces:
+  - Chroma
   - FAISS
   - LanceDB
   - SurrealDB
@@ -35,6 +36,8 @@ what is still incomplete.
 - cached MLX `3B` smoke test works on:
   - `mlx-community/Llama-3.2-3B-Instruct-4bit`
 - FAISS-backed TurboRAG example runs locally
+- Chroma adapter smoke run passes locally on `chromadb 1.5.5`
+- Chroma adapter benchmark run reached `recall@10 = 1.0` across the tested bit-width sweep
 - SurrealDB embedded mode tests pass locally
 - reproducible higher-memory benchmark harness is now checked in under `scripts/` and `benchmarks/`
 - full benchmark matrix run completed on the 128 GB Mac:

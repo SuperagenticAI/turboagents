@@ -64,10 +64,10 @@ def main() -> int:
     ]
 
     if args.pgvector_dsn:
-        commands[-1][1].extend(["--adapters", "faiss", "lancedb", "pgvector"])
+        commands[-1][1].extend(["--adapters", "chroma", "faiss", "lancedb", "pgvector"])
         commands[-1][1].extend(["--pgvector-dsn", args.pgvector_dsn])
     elif args.surrealdb_url:
-        commands[-1][1].extend(["--adapters", "faiss", "lancedb", "surrealdb"])
+        commands[-1][1].extend(["--adapters", "chroma", "faiss", "lancedb", "surrealdb"])
         commands[-1][1].extend(
             [
                 "--surrealdb-url",

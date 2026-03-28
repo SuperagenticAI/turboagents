@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -55,6 +54,15 @@ class TurboLanceDB(InMemoryTurboIndex):
         self._next_id = 0
         self._rows: list[dict[str, Any]] = []
 
+    @staticmethod
+    def _is_transient_timeout(exc: Exception) -> bool:
+        message = str(exc).lower()
+        return "timed out" in message or "timeout" in message
+
+    def _reset_connection(self) -> None:
+        self._db = None
+        self._table = None
+
     def _connect(self):
         if self._db is None:
             if not _lancedb_available():
@@ -89,9 +97,21 @@ class TurboLanceDB(InMemoryTurboIndex):
         self._table = db.create_table(name, data=self._rows, mode=mode)
 
     def open_table(self, name: str) -> None:
-        db = self._connect()
         self.table_name = name
-        self._table = db.open_table(name)
+        attempts = 2
+        last_error: Exception | None = None
+        for attempt in range(attempts):
+            try:
+                db = self._connect()
+                self._table = db.open_table(name)
+                return
+            except Exception as exc:
+                last_error = exc
+                if attempt + 1 >= attempts or not self._is_transient_timeout(exc):
+                    raise
+                self._reset_connection()
+        if last_error is not None:
+            raise last_error
 
     def add(self, vectors: np.ndarray, metadata: list[Any] | None = None) -> None:  # type: ignore[override]
         arr = np.asarray(vectors, dtype=np.float32)
@@ -150,10 +170,32 @@ class TurboLanceDB(InMemoryTurboIndex):
         builder = self._table.search(query_arr, vector_column_name=self.vector_column)
         if hasattr(builder, "distance_type"):
             builder = builder.distance_type(self.metric)
-        records = builder.limit(candidate_limit).to_list()
+        try:
+            records = builder.limit(candidate_limit).to_list()
+        except Exception as exc:
+            if self.table_name is None or not self._is_transient_timeout(exc):
+                raise
+            self._reset_connection()
+            self.open_table(self.table_name)
+            builder = self._table.search(
+                query_arr, vector_column_name=self.vector_column
+            )
+            if hasattr(builder, "distance_type"):
+                builder = builder.distance_type(self.metric)
+            records = builder.limit(candidate_limit).to_list()
 
         if not records:
             return []
+
+        if rerank_top:
+            can_rerank = True
+            for record in records:
+                idx = int(record[self.id_column])
+                if idx >= len(self.vectors):
+                    can_rerank = False
+                    break
+            if not can_rerank:
+                rerank_top = None
 
         if rerank_top:
             ranked = []
