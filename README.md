@@ -12,6 +12,13 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-black.svg" alt="License"></a>
 </p>
 
+<p align="center">
+  <a href="https://superagenticai.github.io/turboagents/"><img src="https://img.shields.io/badge/Documentation-111111?style=for-the-badge&logo=gitbook&logoColor=white" alt="Documentation"></a>
+  <a href="https://superagenticai.github.io/turboagents/getting-started/"><img src="https://img.shields.io/badge/Getting%20Started-1c1c1c?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Getting Started"></a>
+  <a href="https://superagenticai.github.io/turboagents/benchmarks/"><img src="https://img.shields.io/badge/Benchmarks-2a2a2a?style=for-the-badge&logo=speedtest&logoColor=white" alt="Benchmarks"></a>
+  <a href="https://github.com/SuperagenticAI/turboagents"><img src="https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
+
 **Compression Infrastructure For Agent Runtimes And Retrieval Stacks**
 
 `turboagents` is a single Python package for TurboQuant-style KV-cache and vector
@@ -22,13 +29,10 @@ benchmarking without rebuilding the rest of your application.
 
 ## Start Here
 
-Docs:
-- `https://superagenticai.github.io/turboagents/`
-- `https://superagenticai.github.io/turboagents/getting-started/`
-- `https://superagenticai.github.io/turboagents/benchmarks/`
-
-Repository:
-- `https://github.com/SuperagenticAI/turboagents`
+Use the links above as the fastest route through the project. Start with the
+public docs if you want the overall picture, Getting Started if you want the
+first commands, Benchmarks if you want the current numbers, and GitHub if you
+want the source tree and release history.
 
 ## Why It Exists
 
