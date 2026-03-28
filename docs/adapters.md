@@ -1,9 +1,8 @@
 # Adapters
 
-This page explains where TurboAgents fits today across runtime and retrieval
-backends. The package is strongest where it can sit beside an existing engine
-or vector store and add compression or reranking without forcing a larger
-application rewrite.
+TurboAgents is strongest where it can sit beside an existing engine or vector
+store and add compression or reranking without forcing a larger application
+rewrite.
 
 ## Engine Adapters
 

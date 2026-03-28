@@ -20,8 +20,15 @@ them. If you already have an agent framework, a local inference stack, or a
 RAG pipeline, TurboAgents gives you a way to add compression, reranking, and
 benchmarking without rebuilding the rest of your application.
 
-Docs: `https://superagenticai.github.io/turboagents/`  
-Repository: `https://github.com/SuperagenticAI/turboagents`
+## Start Here
+
+Docs:
+- `https://superagenticai.github.io/turboagents/`
+- `https://superagenticai.github.io/turboagents/getting-started/`
+- `https://superagenticai.github.io/turboagents/benchmarks/`
+
+Repository:
+- `https://github.com/SuperagenticAI/turboagents`
 
 ## Why It Exists
 
@@ -91,12 +98,6 @@ turboagents bench kv --format json
 turboagents bench rag --format markdown
 turboagents serve --backend mlx --model mlx-community/Qwen3-0.6B-4bit --dry-run
 ```
-
-If you prefer to browse before installing, start with the public docs:
-
-- `https://superagenticai.github.io/turboagents/`
-- `https://superagenticai.github.io/turboagents/getting-started/`
-- `https://superagenticai.github.io/turboagents/benchmarks/`
 
 ## Reference Integration
 
