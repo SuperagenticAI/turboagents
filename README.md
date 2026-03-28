@@ -13,9 +13,11 @@
 </p>
 
 <p align="center">
+  <a href="https://super-agentic.ai/turboagents"><img src="https://img.shields.io/badge/Website-0b0b0b?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website"></a>
   <a href="https://superagenticai.github.io/turboagents/"><img src="https://img.shields.io/badge/Documentation-111111?style=for-the-badge&logo=gitbook&logoColor=white" alt="Documentation"></a>
   <a href="https://superagenticai.github.io/turboagents/getting-started/"><img src="https://img.shields.io/badge/Getting%20Started-1c1c1c?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Getting Started"></a>
   <a href="https://superagenticai.github.io/turboagents/benchmarks/"><img src="https://img.shields.io/badge/Benchmarks-2a2a2a?style=for-the-badge&logo=speedtest&logoColor=white" alt="Benchmarks"></a>
+  <a href="https://superoptix.ai/turboagents"><img src="https://img.shields.io/badge/SuperOptiX%20Integration-1f1f1f?style=for-the-badge&logo=stackshare&logoColor=white" alt="SuperOptiX Integration"></a>
   <a href="https://github.com/SuperagenticAI/turboagents"><img src="https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
 </p>
 
@@ -30,9 +32,10 @@ benchmarking without rebuilding the rest of your application.
 ## Start Here
 
 Use the links above as the fastest route through the project. Start with the
-public docs if you want the overall picture, Getting Started if you want the
-first commands, Benchmarks if you want the current numbers, and GitHub if you
-want the source tree and release history.
+website if you want the product overview, the public docs if you want the
+package detail, Getting Started if you want the first commands, Benchmarks if
+you want the current numbers, and the SuperOptiX integration page if you want
+the end-to-end application story.
 
 ## Why It Exists
 

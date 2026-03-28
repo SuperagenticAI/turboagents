@@ -11,8 +11,10 @@
     <code>turboagents</code> is a Python package for TurboQuant-style KV-cache and vector compression. It is designed to sit under existing AI systems, not replace them.
   </p>
   <div class="hero-actions">
+    <a class="hero-action secondary" href="https://super-agentic.ai/turboagents">Visit Website</a>
     <a class="hero-action primary" href="getting-started.html">Start With uv</a>
     <a class="hero-action secondary" href="benchmarks.html">See Benchmarks</a>
+    <a class="hero-action secondary" href="https://superoptix.ai/turboagents">SuperOptiX Integration</a>
     <a class="hero-action secondary" href="adapters.html">Browse Adapters</a>
   </div>
   <div class="hero-grid">
@@ -28,6 +30,17 @@
       <h3>Validated Benchmarks</h3>
       <p>Benchmark matrix, MLX sweep, live pgvector validation, and a minimal Needle-style long-context harness.</p>
     </div>
+  </div>
+</div>
+
+<div class="signal-grid">
+  <div class="signal-card">
+    <strong>Product Overview</strong>
+    <span><a href="https://super-agentic.ai/turboagents">super-agentic.ai/turboagents</a></span>
+  </div>
+  <div class="signal-card">
+    <strong>Reference Integration</strong>
+    <span><a href="https://superoptix.ai/turboagents">superoptix.ai/turboagents</a></span>
   </div>
 </div>
 
