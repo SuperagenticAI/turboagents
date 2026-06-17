@@ -21,6 +21,9 @@ def _as_vector(vector: Iterable[float], config: Config) -> np.ndarray:
         raise ValueError(
             f"Vector length {arr.size} does not match config.head_dim={config.head_dim}."
         )
+    pad = config.transform_dim - arr.size
+    if pad:
+        arr = np.concatenate([arr, np.zeros(pad, dtype=np.float32)])
     return arr
 
 
@@ -64,7 +67,8 @@ def rotated_estimate(compressed: CompressedVector, config: Config) -> np.ndarray
 
 def dequantize(compressed: CompressedVector, config: Config) -> np.ndarray:
     """Invert the structured compressed representation."""
-    return inverse_rotate(rotated_estimate(compressed, config), config)
+    restored = inverse_rotate(rotated_estimate(compressed, config), config)
+    return restored[: config.head_dim]
 
 
 def inner_product(query: Iterable[float], compressed: CompressedVector, config: Config) -> float:

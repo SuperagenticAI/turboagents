@@ -24,7 +24,7 @@ class SearchHit:
     metadata: Any = None
 
 
-@dataclass(slots=True)
+@dataclass
 class InMemoryTurboIndex:
     dim: int
     bits: float = 3.5

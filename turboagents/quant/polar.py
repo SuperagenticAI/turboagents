@@ -63,7 +63,7 @@ def polar_quantize_rotated(rotated: np.ndarray, config: Config) -> tuple[np.ndar
     indices = np.zeros_like(angles, dtype=np.int32)
     for idx, angle in enumerate(angles):
         angle_type = "last" if idx == angles.size - 1 else "inner"
-        remaining_dim = config.head_dim - idx
+        remaining_dim = config.transform_dim - idx
         codebook = load_codebook(config.bits, angle_type=angle_type, remaining_dim=remaining_dim)
         indices[idx] = quantize_value(float(angle), codebook)
     return indices, radius
@@ -79,7 +79,7 @@ def polar_dequantize(angle_indices: np.ndarray, radius: float, config: Config) -
     angles = np.zeros(angle_indices.size, dtype=np.float32)
     for idx, angle_index in enumerate(angle_indices):
         angle_type = "last" if idx == angle_indices.size - 1 else "inner"
-        remaining_dim = config.head_dim - idx
+        remaining_dim = config.transform_dim - idx
         codebook = load_codebook(config.bits, angle_type=angle_type, remaining_dim=remaining_dim)
         angles[idx] = dequantize_index(int(angle_index), codebook)
     return from_spherical(radius, angles)

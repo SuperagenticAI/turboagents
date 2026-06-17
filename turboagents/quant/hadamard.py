@@ -59,9 +59,9 @@ def fwht(vector: Iterable[float], normalize: bool = True) -> np.ndarray:
 def rotate(vector: Iterable[float], config: Config) -> np.ndarray:
     """Apply seeded sign flips followed by a normalized FWHT."""
     arr = _as_float_array(vector)
-    if arr.size != config.head_dim:
+    if arr.size != config.transform_dim:
         raise ValueError(
-            f"Vector length {arr.size} does not match config.head_dim={config.head_dim}."
+            f"Vector length {arr.size} does not match config.transform_dim={config.transform_dim}."
         )
     return fwht(arr * sign_pattern(arr.size, config.seed), normalize=True)
 
@@ -73,8 +73,8 @@ def inverse_rotate(vector: Iterable[float], config: Config) -> np.ndarray:
     Hadamard transform followed by the same sign pattern.
     """
     arr = _as_float_array(vector)
-    if arr.size != config.head_dim:
+    if arr.size != config.transform_dim:
         raise ValueError(
-            f"Vector length {arr.size} does not match config.head_dim={config.head_dim}."
+            f"Vector length {arr.size} does not match config.transform_dim={config.transform_dim}."
         )
     return fwht(arr, normalize=True) * sign_pattern(arr.size, config.seed)
